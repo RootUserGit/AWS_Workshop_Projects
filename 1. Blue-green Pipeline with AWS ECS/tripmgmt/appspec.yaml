@@ -1,0 +1,9 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "arn:aws:ecs:us-east-2:997450571655:task-definition/task-tripmgmt-demo:38" 
+        LoadBalancerInfo:
+          ContainerName: "cntr-img-tripmgmt"
+          ContainerPort: 8080

@@ -1,5 +1,3 @@
-#SES VERSION
-
 import boto3
 import os
 from datetime import datetime, timezone
@@ -8,8 +6,8 @@ EMAIL_TO = os.environ['EMAIL_TO']
 EMAIL_FROM = os.environ['EMAIL_FROM']
 
 SES_REGION = os.environ["SES_REGION"]
-SES_ACCESS_KEY = os.environ["ACCESS_KEY"]
-SES_SECRET_KEY = os.environ["ACCESS_SECRET_KEY"]
+SES_ACCESS_KEY = os.environ["SES_ACCESS_KEY"]
+SES_SECRET_KEY = os.environ["SES_SECRET_KEY"]
 
 ec2 = boto3.client('ec2')
 ses = boto3.client(
@@ -104,11 +102,15 @@ def lambda_handler(event, context):
             </tr>
             {rows}
         </table>
-        <p>Regards, <br> Monitoring Team</p>
+        <br>
+        <p>Regards,<br>Monitoring Team</p>
     </body>
     </html>
     """
 
-    send_email("EC2 Running Instances Report", html)
+    date_str = datetime.now(timezone.utc).strftime("%d-%b-%Y")
+    subject = f"EC2 Running Instances Report - {date_str}"
+
+    send_email(subject, html)
 
     return {"msg": "Email sent", "instances": len(instances_info)}
